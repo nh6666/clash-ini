@@ -7,7 +7,7 @@ proxy-providers:
       enable: true
       url: "http://www.gstatic.com/generate_204"
       interval: 300
-    proxy: 🟢 直连
+    proxy: DIRECT
     url: "节点订阅"
 
 # 代理模式
@@ -56,16 +56,11 @@ dns:
       - "https://dns.cloudflare.com/dns-query"
       - "https://dns.google/dns-query"
          
-proxies:
-- name: "🟢 直连"
-  type: direct
-  udp: true
- 
 # 锚点
-pr: &pr {type: select, proxies: [🚀 常规代理, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇰🇷 韩国节点, 🇸🇬 狮城节点, 🇺🇲 美国节点, 🌐 自定义节点, 🟢 直连, REJECT]}
+pr: &pr {type: select, proxies: [🚀 常规代理, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇰🇷 韩国节点, 🇸🇬 狮城节点, 🇺🇲 美国节点, 🌐 自定义节点, DIRECT, REJECT]}
 # 策略组
 proxy-groups:
-  - {name: 🚀 常规代理, type: select, proxies: [🇭🇰 香港节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇰🇷 韩国节点, 🇸🇬 狮城节点, 🇺🇲 美国节点, 🌐 自定义节点, 🟢 直连, REJECT]}
+  - {name: 🚀 常规代理, type: select, proxies: [🇭🇰 香港节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇰🇷 韩国节点, 🇸🇬 狮城节点, 🇺🇲 美国节点, 🌐 自定义节点, DIRECT, REJECT]}
   - {name: 📹 YouTube,!!merge <<: *pr}
   - {name: 🍀 Google,!!merge <<: *pr}
   - {name: 🤖 ChatGPT,!!merge <<: *pr}
@@ -88,7 +83,7 @@ proxy-groups:
   - {name: 🇺🇲 美国节点, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(美|US|(?i)States|American))^((?!(港|台|日|韩|新)).)*$"}
   - {name: 🌐 自定义节点, type: select, include-all: true}
 rules:
-  - RULE-SET,private_domain,🟢 直连
+  - RULE-SET,private_domain,DIRECT
   - RULE-SET,apple_domain,🍎 Apple
   - RULE-SET,proxys,🚀 常规代理
   - RULE-SET,proxylite,🚀 常规代理
