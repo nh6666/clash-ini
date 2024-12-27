@@ -43,7 +43,7 @@ proxy-groups:
   - {name: 📲 Telegram,!!merge <<: *pr}
   - {name: 🎥 NETFLIX,!!merge <<: *pr}
   - {name: 🎶 网易音乐,!!merge <<: *pr}
-  - {name: 🍎 Apple,!!merge <<: *pr}
+  - {name: 🍎 苹果服务,!!merge <<: *pr}
   - {name: 🎯 全球直连,!!merge <<: *pr}
   - {name: 🐟 漏网之鱼,!!merge <<: *pr}
 
@@ -86,7 +86,7 @@ rules:
   - RULE-SET,Tiktok规则,🎵 TikTok
   - RULE-SET,网易云规则,🎶 网易音乐
   - RULE-SET,微软规则,Ⓜ️ 微软服务
-  - RULE-SET,苹果服务规则,🍎 Apple
+  - RULE-SET,苹果服务规则,🍎 苹果服务
   - RULE-SET,自定义规则,🚀 常规代理
   - RULE-SET,常规代理规则,🚀 常规代理
   - RULE-SET,geolocation-!cn,🚀 常规代理
