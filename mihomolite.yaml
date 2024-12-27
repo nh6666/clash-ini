@@ -9,45 +9,6 @@ proxy-providers:
       interval: 300
     proxy: DIRECT
     url: "节点订阅"
-
-# 代理模式
-tun:
-  enable: true
-  stack: mixed
-  mtu: 9000
-  dns-hijack:
-    - "any:53"
-    - "tcp://any:53"
-  auto-route: true
-  auto-redirect: true
-  auto-detect-interface: true
-  
-# DNS模块
-dns:
-  enable: true
-  listen: 0.0.0.0:1053
-  ipv6: false
-  respect-rules: true
-  # 模式切换 redir-host / fake-ip
-  enhanced-mode: fake-ip
-  fake-ip-range: 28.0.0.1/8
-  # 模式切换 whitelist/blacklist 
-  # 黑名单模式表示如果匹配成功则不返回 Fake-IP, 白名单模式时只有匹配成功才返回 Fake-IP
-  fake-ip-filter-mode: blacklist
-  fake-ip-filter:
-    - "+.lan"
-    - "+.local"
-    - geosite:private
-    - geosite:cn
-  default-nameserver:
-    - 223.5.5.5
-    - 119.29.29.29
-  proxy-server-nameserver:
-    - 223.5.5.5
-    - 119.29.29.29
-  nameserver:
-    - 223.5.5.5
-    - 119.29.29.29
          
 # 锚点
 pr: &pr {type: select, proxies: [🚀 常规代理, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇰🇷 韩国节点, 🇸🇬 狮城节点, 🇺🇲 美国节点, 🌐 自定义节点, DIRECT, REJECT]}
@@ -75,7 +36,7 @@ proxy-groups:
   - {name: 🇺🇲 美国节点, type: UrlTest, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(美|US|(?i)States|American))^((?!(港|台|日|韩|新)).)*$"}
   - {name: 🌐 自定义节点, type: select, include-all: true}
 rules:
-  - RULE-SET,局域网规则,DIRECT  
+  - RULE-SET,private,DIRECT
   - RULE-SET,AI规则,🤖 ChatGPT
   - RULE-SET,Youtube规则,📹 YouTube
   - RULE-SET,Google规则,🍀 Google
@@ -89,6 +50,7 @@ rules:
   - RULE-SET,苹果服务规则,🍎 Apple
   - RULE-SET,自定义规则,🚀 常规代理
   - RULE-SET,常规代理规则,🚀 常规代理
+  - RULE-SET,geolocation-!cn,🚀 常规代理
   - RULE-SET,cn域名规则,🎯 全球直连
   - RULE-SET,cn_ip规则,🎯 全球直连
   - RULE-SET,google_ip规则,🍀 Google,no-resolve
@@ -100,7 +62,7 @@ rule-anchor:
   domain: &domain {type: http, interval: 86400, behavior: domain, format: mrs}
   class: &class {type: http, interval: 86400, behavior: classical, format: text}
 rule-providers:
-  局域网规则: {!!merge <<: *class, url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/LocalAreaNetwork.list"}
+  private: {!!merge <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs"}
   AI规则: {!!merge <<: *class, url: "https://raw.githubusercontent.com/qichiyuhub/rule/refs/heads/master/AI.list"}
   Youtube规则: {!!merge <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs"}
   Google规则: {!!merge <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs"}
@@ -114,6 +76,7 @@ rule-providers:
   苹果服务规则: {!!merge <<: *class, url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/Apple.list"}
   自定义规则: {!!merge <<: *class, url: "https://raw.githubusercontent.com/nh6666/clash-ini/refs/heads/main/Proxy.list"}
   常规代理规则: {!!merge <<: *class, url: "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/ProxyGFWlist.list"}
+  geolocation-!cn: {!!merge <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs"}
   cn域名规则: {!!merge <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.mrs"}
   cn_ip规则: {!!merge <<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/cn.mrs"}
   google_ip规则: {!!merge <<: *ip, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/google.mrs"}
