@@ -10,11 +10,29 @@ proxy-providers:
     proxy: DIRECT
     url: "节点订阅"
          
-# 锚点
-pr: &pr {type: select, proxies: [🚀 常规代理, 🇭🇰 香港节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇰🇷 韩国节点, 🇸🇬 狮城节点, 🇺🇲 美国节点, 🌐 自定义节点, DIRECT, REJECT]}
+# # # # # 策略组参数锚点
+#
+# 锚点 - 时延优选参数 [每 6 秒一次惰性健康检查，容差 20ms，时延超过 2 秒判定为失败，失败 3 次则自动触发健康检查]
+UrlTest: &UrlTest {type: url-test, interval: 6, tolerance: 20, lazy: true, url: 'http://www.google.com/blank.html', disable-udp: false, timeout: 2000, max-failed-times: 3, hidden: true, include-all-providers: true}
+# 锚点 - 故障转移参数 [每 6 秒一次惰性健康检查，时延超过 2 秒判定为失败，失败 3 次则自动触发健康检查]
+FallBack: &FallBack {type: fallback, interval: 6, lazy: true, url: 'http://www.google.com/blank.html', disable-udp: false, timeout: 2000, max-failed-times: 3, hidden: true, include-all-providers: true}
+# 锚点 - 负载均衡参数 [每 6 秒一次惰性健康检查，时延超过 2 秒判定为失败，失败 3 次则自动触发健康检查]
+LoadBalance: &LoadBalance {type: load-balance, interval: 6, lazy: true, url: 'http://www.google.com/blank.html', disable-udp: false, strategy: consistent-hashing, timeout: 2000, max-failed-times: 3, hidden: true, include-all-providers: true}
+#
+pr: &pr {type: select, proxies: [🚀 常规代理, ⏱香港时延优选, 🚥香港故障转移, 🎛香港负载均衡, ⏱台湾时延优选, 🚥台湾故障转移, 🎛台湾负载均衡, ⏱日本时延优选, 🚥日本故障转移, 🎛日本负载均衡, ⏱韩国时延优选, 🚥韩国故障转移, 🎛韩国负载均衡, ⏱新国时延优选, 🚥新国故障转移, 🎛新国负载均衡, ⏱美国时延优选, 🚥美国故障转移, 🎛美国负载均衡, 自定义节点, DIRECT, REJECT]}
+
+# 锚点 - 节点筛选组
+FilterHK: &FilterHK '^(?=.*((?i)🇭🇰|香港|(\b(HK|Hong)(\d+)?\b)))(?!.*((?i)回国|校园|游戏|🎮|(\b(GAME)\b))).*$'
+FilterTW: &FilterTW '^(?=.*((?i)🇹🇼|台湾|(\b(TW|Tai|Taiwan)(\d+)?\b)))(?!.*((?i)回国|校园|游戏|🎮|(\b(GAME)\b))).*$'
+FilterJP: &FilterJP '^(?=.*((?i)🇯🇵|日本|川日|东京|大阪|泉日|埼玉|(\b(JP|Japan)(\d+)?\b)))(?!.*((?i)回国|校园|游戏|🎮|(\b(GAME)\b))).*$'
+FilterKR: &FilterKR '^(?=.*((?i)🇰🇷|韩国|韓|首尔|(\b(KR|Korea)(\d+)?\b)))(?!.*((?i)回国|校园|游戏|🎮|(\b(GAME)\b))).*$'
+FilterSG: &FilterSG '^(?=.*((?i)🇸🇬|新加坡|狮|(\b(SG|Singapore)(\d+)?\b)))(?!.*((?i)回国|校园|游戏|🎮|(\b(GAME)\b))).*$'
+FilterUS: &FilterUS '^(?=.*((?i)🇺🇸|美国|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|(\b(US|United States)(\d+)?\b)))(?!.*((?i)回国|校园|游戏|🎮|(\b(GAME)\b))).*$'
+FilterAll: &FilterAll '^(?=.*(.))(?!.*((?i)群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|(\b(USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author)(\d+)?\b|(\d{4}-\d{2}-\d{2}|\dG)))).*$'
+
 # 策略组
 proxy-groups:
-  - {name: 🚀 常规代理, type: select, proxies: [🇭🇰 香港节点, 🇨🇳 台湾节点, 🇯🇵 日本节点, 🇰🇷 韩国节点, 🇸🇬 狮城节点, 🇺🇲 美国节点, 🌐 自定义节点, DIRECT, REJECT]}
+  - {name: 🚀 常规代理, type: select, proxies: [⏱香港时延优选, 🚥香港故障转移, 🎛香港负载均衡, ⏱台湾时延优选, 🚥台湾故障转移, 🎛台湾负载均衡, ⏱日本时延优选, 🚥日本故障转移, 🎛日本负载均衡, ⏱韩国时延优选, 🚥韩国故障转移, 🎛韩国负载均衡, ⏱新国时延优选, 🚥新国故障转移, 🎛新国负载均衡, ⏱美国时延优选, 🚥美国故障转移, 🎛美国负载均衡, 自定义节点, DIRECT, REJECT]}
   - {name: 📹 YouTube,!!merge <<: *pr}
   - {name: 🍀 Google,!!merge <<: *pr}
   - {name: 🤖 ChatGPT,!!merge <<: *pr}
@@ -28,13 +46,34 @@ proxy-groups:
   - {name: 🍎 Apple,!!merge <<: *pr}
   - {name: 🎯 全球直连,!!merge <<: *pr}
   - {name: 🐟 漏网之鱼,!!merge <<: *pr}
-  - {name: 🇭🇰 香港节点, type: fallback, include-all: true, filter: "(?=.*(港|HK|(?i)Hong))^((?!(台|日|韩|新|美)).)*$"}
-  - {name: 🇨🇳 台湾节点, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(台|TW|(?i)Taiwan))^((?!(港|日|韩|新|美)).)*$"}
-  - {name: 🇯🇵 日本节点, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(日|JP|(?i)Japan))^((?!(港|台|韩|新|美)).)*$" }
-  - {name: 🇰🇷 韩国节点, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(韩|韓|朝|KR|(?i)Korea))^((?!(港|台|日|新|美)).)*$"}
-  - {name: 🇸🇬 狮城节点, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(新加|狮|獅|SG|(?i)Singapore))^((?!(港|台|日|韩|兰|美)).)*$" }
-  - {name: 🇺🇲 美国节点, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "(?=.*(美|US|(?i)States|American))^((?!(港|台|日|韩|新)).)*$"}
-  - {name: 🌐 自定义节点, type: select, include-all: true}
+
+# 时延优选策略组
+  - {name: ⏱香港时延优选, <<: *UrlTest, filter: *FilterHK}
+  - {name: ⏱台湾时延优选, <<: *UrlTest, filter: *FilterTW}
+  - {name: ⏱日本时延优选, <<: *UrlTest, filter: *FilterJP}
+  - {name: ⏱韩国时延优选, <<: *UrlTest, filter: *FilterKR}
+  - {name: ⏱新国时延优选, <<: *UrlTest, filter: *FilterSG}
+  - {name: ⏱美国时延优选, <<: *UrlTest, filter: *FilterUS}
+
+# 故障转移策略组
+  - {name: 🚥香港故障转移, <<: *FallBack, filter: *FilterHK}
+  - {name: 🚥台湾故障转移, <<: *FallBack, filter: *FilterTW}
+  - {name: 🚥日本故障转移, <<: *FallBack, filter: *FilterJP}
+  - {name: 🚥韩国故障转移, <<: *FallBack, filter: *FilterKR}
+  - {name: 🚥新国故障转移, <<: *FallBack, filter: *FilterSG}
+  - {name: 🚥美国故障转移, <<: *FallBack, filter: *FilterUS}
+
+# 负载均衡策略组
+  - {name: 🎛香港负载均衡, <<: *LoadBalance, filter: *FilterHK}
+  - {name: 🎛台湾负载均衡, <<: *LoadBalance, filter: *FilterTW}
+  - {name: 🎛日本负载均衡, <<: *LoadBalance, filter: *FilterJP}
+  - {name: 🎛韩国负载均衡, <<: *LoadBalance, filter: *FilterKR}
+  - {name: 🎛新国负载均衡, <<: *LoadBalance, filter: *FilterSG}
+  - {name: 🎛美国负载均衡, <<: *LoadBalance, filter: *FilterUS}
+#
+  - {name: 自定义节点, type: select, include-all-providers: true, filter: *FilterAll}
+
+# 规则指向  
 rules:
   - RULE-SET,private,DIRECT
   - RULE-SET,AI规则,🤖 ChatGPT
@@ -57,10 +96,14 @@ rules:
   - RULE-SET,telegram_ip规则,📲 Telegram,no-resolve
   - RULE-SET,netflix_ip规则,🎥 NETFLIX,no-resolve
   - MATCH,🐟 漏网之鱼
+
+# 订阅规则锚点  
 rule-anchor:
-  ip: &ip {type: http, interval: 86400, behavior: ipcidr, format: mrs}
-  domain: &domain {type: http, interval: 86400, behavior: domain, format: mrs}
-  class: &class {type: http, interval: 86400, behavior: classical, format: text}
+  ip: &ip {type: http, interval: 7200, behavior: ipcidr, format: mrs}
+  domain: &domain {type: http, interval: 7200, behavior: domain, format: mrs}
+  class: &class {type: http, interval: 7200, behavior: classical, format: text}
+
+# 订阅规则
 rule-providers:
   private: {!!merge <<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs"}
   AI规则: {!!merge <<: *class, url: "https://raw.githubusercontent.com/qichiyuhub/rule/refs/heads/master/AI.list"}
