@@ -33,16 +33,16 @@ FilterAll: &FilterAll '^(?=.*(.))(?!.*((?i)群|邀请|返利|循环|官网|客�
 # 策略组
 proxy-groups:
   - {name: 🚀 常规代理, type: select, proxies: [⏱香港时延优选, 🚥香港故障转移, 🎛香港负载均衡, ⏱台湾时延优选, 🚥台湾故障转移, 🎛台湾负载均衡, ⏱日本时延优选, 🚥日本故障转移, 🎛日本负载均衡, ⏱韩国时延优选, 🚥韩国故障转移, 🎛韩国负载均衡, ⏱新国时延优选, 🚥新国故障转移, 🎛新国负载均衡, ⏱美国时延优选, 🚥美国故障转移, 🎛美国负载均衡, 自定义节点, DIRECT, REJECT]}
+  - {name: 🤖 ChatGPT,!!merge <<: *pr}
   - {name: 📹 YouTube,!!merge <<: *pr}
   - {name: 🍀 Google,!!merge <<: *pr}
-  - {name: 🤖 ChatGPT,!!merge <<: *pr}
   - {name: 👨🏿‍💻 GitHub,!!merge <<: *pr}
-  - {name: 🎮 Steam,!!merge <<: *pr}
-  - {name: 🎵 TikTok,!!merge <<: *pr}
   - {name: 📲 Telegram,!!merge <<: *pr}
   - {name: 🎥 NETFLIX,!!merge <<: *pr}
-  - {name: Ⓜ️ 微软服务,!!merge <<: *pr}
+  - {name: 🎮 Steam,!!merge <<: *pr}
+  - {name: 🎵 TikTok,!!merge <<: *pr}
   - {name: 🎶 网易音乐,!!merge <<: *pr}
+  - {name: Ⓜ️ 微软服务,!!merge <<: *pr}
   - {name: 🍎 苹果服务,!!merge <<: *pr}
   - {name: 🎯 全球直连,!!merge <<: *pr}
   - {name: 🐟 漏网之鱼,!!merge <<: *pr}
