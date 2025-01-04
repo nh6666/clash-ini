@@ -37,11 +37,11 @@ proxy-groups:
   - {name: 🍀 Google,!!merge <<: *pr}
   - {name: 🤖 ChatGPT,!!merge <<: *pr}
   - {name: 👨🏿‍💻 GitHub,!!merge <<: *pr}
-  - {name: Ⓜ️ 微软服务,!!merge <<: *pr}
   - {name: 🎮 Steam,!!merge <<: *pr}
   - {name: 🎵 TikTok,!!merge <<: *pr}
   - {name: 📲 Telegram,!!merge <<: *pr}
   - {name: 🎥 NETFLIX,!!merge <<: *pr}
+  - {name: Ⓜ️ 微软服务,!!merge <<: *pr}
   - {name: 🎶 网易音乐,!!merge <<: *pr}
   - {name: 🍎 苹果服务,!!merge <<: *pr}
   - {name: 🎯 全球直连,!!merge <<: *pr}
